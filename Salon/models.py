@@ -6,9 +6,9 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 
 # Create your models here.
 
-#Image Model 
-class Image(models.Model):
-    image = models.ImageField(upload_to='images/')
+# #Image Model 
+# class Image(models.Model):
+#     image = models.ImageField(upload_to='images/')
 
  #Salon Model   
 class Salon(models.Model):
