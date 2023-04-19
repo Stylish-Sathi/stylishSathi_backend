@@ -1,28 +1,32 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
-from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-# Create your models here.
+from django.core.validators import RegexValidator
+from django.utils.translation import gettext_lazy as _
+
+GENDERS = (
+    ("MALE", _("Male")),
+    ("FEMALE", _("Female")),
+    ("OTHER", _("Other")),
+)
+
+PHONE_REGEX = RegexValidator(
+    regex=r"^\+?1?\d{9,15}$",
+    message=_("Phone number must be in international format."),
+)
+
+
 class Client(models.Model):
-    firstName = models.CharField(max_length=127, blank=False, null=False)
-    lastName = models.CharField(max_length= 127, blank= False, null=False)
-    genders = (
-        ("MALE", "male"),
-        ("FEMALE", "female"),
-        ("OTHER", "other"),
+    firstName = models.CharField(max_length=127)
+    lastName = models.CharField(max_length=127)
+    phoneNumbers = ArrayField(
+        models.CharField(max_length=15, validators=[PHONE_REGEX]),
+        blank=False,
+        null=False,
     )
-    phoneNumbers = ArrayField(models.CharField(max_length=15), blank=False, null= False)
-    username = models.OneToOneField(User, on_delete= models.CASCADE, null=False)
-    email = models.EmailField(max_length=200, blank = False, null= False)
-    gender = models.CharField(
-            choices =  genders,
-            max_length = 10,
-            blank=False
-            )
+    email = models.EmailField(max_length=200)
+    gender = models.CharField(choices=GENDERS, max_length=10)
     reg_date = models.DateTimeField(auto_now_add=True)
 
+
     def __str__(self):
-        id = self.id
-        return f"{self.firstName} {self.lastName}({id})"
-
-
+        return f"{self.firstName} {self.lastName} ({self.id})"

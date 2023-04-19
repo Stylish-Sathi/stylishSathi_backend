@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'Log',
     'Order',
     'Payment',
-    'Service_offered',
     'Salon',
     'Staff',
     'Service'
